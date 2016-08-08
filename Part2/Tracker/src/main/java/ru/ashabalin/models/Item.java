@@ -9,6 +9,7 @@ public class Item{
 	private String name;
 	private String description;
 	private long create;
+	private String comment;
 	
 	public Item(){
 		
@@ -33,6 +34,9 @@ public class Item{
 	public long getCreate(){
 		return this.create;
 	}
+	public String getComment(){
+		return this.comment;
+	}
 
 	public void setId(String id){
 		this.id = id;
@@ -42,5 +46,8 @@ public class Item{
 	}
 	public void setDescription(String description){
 		this.description = description;
+	}
+	public void setComment(String comment){
+		this.comment = comment;
 	}
 }

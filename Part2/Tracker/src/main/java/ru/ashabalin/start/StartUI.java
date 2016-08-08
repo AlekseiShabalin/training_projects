@@ -1,48 +1,44 @@
 package ru.ashabalin.start;
 
-import ru.ashabalin.models.*;
+import java.util.Scanner;
 
 /**
  * Created by Aleksei Shabalin.
  */
  
 public class StartUI{
-	public static void main(String[] args){
+	private IO io;
+	private Tracker tracker;
+	
+	public StartUI(IO io, Tracker tracker){
+		this.io = io;
+		this.tracker = tracker;
+	}
+	
+	/**
+	* Method initialization StartUI
+	*/
+	public void init(){
+		System.out.println("***Hello!!!***");
+//		Tracker tracker = new Tracker();
+		MenuTracker menu = new MenuTracker(this.io, tracker);
+		menu.fillActions();
+		do{
+			menu.show();
+			int key = Integer.valueOf(io.ask("Please select what you want to do: "));
+			if(key > 0 && key < 8) {
+				menu.select(key);
+			}else{
+				io.println("You have entered an incorrect menu number.");
+				}
+		}while(!"y".equals(this.io.ask("Exit? Yes (y)/ No (n): ")));
+		
+	}
+		
+	public static void main(String[] args){	
+	
+		IO io = new ConsoleIO(new Scanner(System.in), System.out);
 		Tracker tracker = new Tracker();
-		
-		// add item		
-		Task taskFirst = new Task("first", "description Fisrt");
-		tracker.add(taskFirst);
-		Task taskSecond = new Task("second", "description Second");
-		tracker.add(taskSecond);
-		Task taskThird = new Task("third", "description Third");
-		tracker.add(taskThird);
-		Task taskFourth = new Task("fourth", "description Fourth");
-		tracker.add(taskFourth);
-		Task taskFifth = new Task("fifth", "description Fifth");
-		tracker.add(taskFifth);
-		
-		//print all
-		tracker.printTask();
-		
-		//edit item
-		Task taskSixth = new Task("Sixth", "description Sixth");
-		taskSixth.setId(taskFourth.getId());
-		tracker.editItem(taskSixth);
-		
-		//look for id
-		Task taskSeven = new Task("seventh", "description Seventh");
-		taskSeven = (Task) tracker.findById(taskSecond.getId());
-		System.out.printf("%s, %s, %s%n%n", taskSeven.getName(), taskSeven.getDescription(), taskSeven.getId());
-		
-		//look for name
-		Task taskEighth = new Task("eighth", "description Eighth");
-		taskEighth = (Task) tracker.findByName(taskThird.getName());
-		System.out.printf("%s, %s, %s%n%n", taskEighth.getName(), taskEighth.getDescription(), taskEighth.getId());
-		
-		// remove item
-		tracker.removeItem(taskFifth);
-		
-		tracker.printTask();
+		new StartUI(io, tracker).init();
 	}
 }

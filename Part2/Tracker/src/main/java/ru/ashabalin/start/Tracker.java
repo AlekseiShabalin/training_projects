@@ -8,19 +8,60 @@ import java.util.*;
  */
  
 public class Tracker {
-	private Item[] items = new Item[20];
+	private Item[] items = new Item[3];
 	private int position = 0;
 	private static final Random RN = new Random();
+	
+	/**
+	* Method generation id
+	*/
+	private String generateId(){
+		return String.valueOf(System.currentTimeMillis() + RN.nextInt(100));
+	}
+		
+	/**
+	* Method up size array
+	*/
+	private Item[] upSizeItems(){
+		int resultPosition = items.length + 1;
+		Item[] result = new Item[resultPosition];
+		position = 0;
+			for(int index = 0; index < items.length; index++){
+				result[index] = items[index];
+				position++;
+			}
+		return result;
+	}
+		
+	/**
+	* Method down size array
+	*/
+	private Item[] downSizeItems(){
+		int resultPosition = this.position - 1;
+		Item[] result = new Item[resultPosition];
+		position = 0;
+		for(int index = 0; index < items.length - 1; index++){
+			result[index] = items[index];
+			position++;
+		}
+		return result;
+	}
 	
 	/**
 	* Method add aplication
 	*/
 	public Item add(Item item){
-		item.setId(this.generateId());
-		this.items[position++] = item;
+		if(this.position >= this.items.length){
+			this.items = this.upSizeItems();
+			item.setId(this.generateId());
+			items[position++] = item;
+		}else {
+			item.setId(this.generateId());
+			this.items[position++] = item;
+			}
 		return item;
 	}	
-	
+		
 	/**
 	* Method search item by id
 	*/
@@ -50,13 +91,6 @@ public class Tracker {
 	}
 	
 	/**
-	* Method generation id
-	*/
-	String generateId(){
-		return String.valueOf(System.currentTimeMillis() + RN.nextInt(100));
-	}
-	
-	/**
 	* Method get all items in tracker
 	*/
 	public Item[] getAll(){
@@ -68,15 +102,31 @@ public class Tracker {
 	}
 	
 	/**
-	* Method print task in tracker
+	* Method print all task from tracker
 	*/
 	public void printTask(){
 		for (Item item : this.getAll()){
 			if(item != null){
-				System.out.printf("%s, %s, %s%n", item.getName(), item.getDescription(), item.getId());
+				System.out.printf("%s, %s, %s", item.getName(), item.getDescription(), item.getId());
 			}
+			if(item.getComment() != null){
+				System.out.printf(", %s", item.getComment());
+			}
+			System.out.printf("%n");
 		}
-		System.out.println();
+	}
+	
+	/**
+	* Method print one task from tracker
+	*/
+	public void printOneTask(Item item){
+		if(item != null){
+			System.out.printf("%s, %s, %s", item.getName(), item.getDescription(), item.getId());
+		}
+		if(item.getComment() != null){
+			System.out.printf(", %s", item.getComment());
+		}
+		System.out.printf("%n");
 	}
 	
 	/**
@@ -88,6 +138,18 @@ public class Tracker {
 				this.items[index] = null;
 				break;
 			}
+		}
+		if (this.position > 1) {
+			for(int indexOne = 0; indexOne < items.length; indexOne++){
+				if(items[indexOne] == null){
+					Item itemTemp = items[indexOne];
+					for(int indexTwo = indexOne; indexTwo < items.length - 1; indexTwo++){
+						items[indexTwo] = items[indexTwo + 1];
+					}
+					items[items.length - 1] = itemTemp;					
+				}			
+			}	
+			this.items = this.downSizeItems();	
 		}	
 	}
 	
@@ -101,5 +163,5 @@ public class Tracker {
 				break;
 			}
 		}	
-	}
+	}	
 }
