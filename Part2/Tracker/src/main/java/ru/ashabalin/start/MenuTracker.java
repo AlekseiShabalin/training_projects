@@ -30,16 +30,37 @@ public class MenuTracker {
 	}
 	
 	/**
+	* Method return size menu
+	*/
+	
+	public int[] getSize(){
+		int[] size = new int[this.actions.length];
+		for(int i = 0; i < this.actions.length; i++){
+			if(actions[i] != null){
+				size[i] = i + 1;
+			}else {
+				break;
+			}
+		}
+		return size;
+	}
+	
+	/**
 	* Method select actions
 	*/
 	public void select(int key) {
-		this.actions[key - 1].execute(this.io, this.tracker);
+		if(key > 0 || key <= this.actions.length){
+			this.actions[key - 1].execute(this.io, this.tracker);
+		} else {
+			throw new MenuOutException("Out of menu range.");
+		}		
 	}
 	
 	/**
 	* Method show task
 	*/
 	public void show(){
+		System.out.println("<<<<<<< Menu programm >>>>>>>");
 		for (UserAction action : this.actions) {
 			if(action != null) {
 				System.out.println(action.info());
