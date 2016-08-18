@@ -10,6 +10,7 @@ public class MenuTracker {
 	private IO io;
 	private Tracker tracker;
 	private UserAction[] actions = new UserAction[7];
+	private int position = 0;
 	
 	public MenuTracker(IO io, Tracker tracker) {
 		this.io = io;
@@ -20,19 +21,25 @@ public class MenuTracker {
 	* Method contain list actions
 	*/
 	public void fillActions() {
-		this.actions[0] = new AddItems();
-		this.actions[1] = new ShowItems();
-		this.actions[2] = new EditItem();
-		this.actions[3] = new SearchById();
-		this.actions[4] = new SearchByName();
-		this.actions[5] = new AddComment();
-		this.actions[6] = new DelTask();
+		this.actions[position++] = new AddItems("Add the new item.");
+		this.actions[position++] = new ShowItems("Show all items.");
+		this.actions[position++] = new EditItem("Edit the new item.");
+		this.actions[position++] = new SearchById("Search task by ID.");
+		this.actions[position++] = new SearchByName("Search task by Name.");
+		this.actions[position++] = new AddComment("Add comment to task.");
+		this.actions[position++] = new DelTask("Delete task.");
+	}
+	
+	/**
+	* Method add event
+	*/	
+	public void addAction(UserAction action) {
+		this.actions[position++] = action;
 	}
 	
 	/**
 	* Method return size menu
-	*/
-	
+	*/	
 	public int[] getSize(){
 		int[] size = new int[this.actions.length];
 		for(int i = 0; i < this.actions.length; i++){
@@ -71,7 +78,11 @@ public class MenuTracker {
 	/**
 	* Class create new Task
 	*/
-	private class AddItems implements UserAction {
+	private class AddItems extends BaseAction {
+		
+		AddItems(String name){
+			super(name);
+		}
 		
 		public int key() {
 			return 1;
@@ -83,16 +94,16 @@ public class MenuTracker {
 			String comment = io.ask("Please, enter the task`s comment (optional): ");
 			tracker.add(new Task(name, description, comment));
 		}
-		
-		public String info() {
-			return String.format("%s. %s", this.key(), "Add the new item.");
-		}
 	}
 	
 	/**
 	* Class show all Tasks
 	*/
-	private static class ShowItems implements UserAction {
+	private static class ShowItems extends BaseAction {
+		
+		ShowItems(String name){
+			super(name);
+		}
 		
 		public int key() {
 			return 2;
@@ -109,16 +120,17 @@ public class MenuTracker {
 					}
 			}
 		}
-		
-		public String info() {
-			return String.format("%s. %s", this.key(), "Show all items.");
-		}
 	}
 	
 	/**
 	* Class edit Task
 	*/
-	private class EditItem implements UserAction {
+	private class EditItem extends BaseAction {
+		
+		EditItem(String name){
+			super(name);
+		}
+		
 		public int key() {
 				return 3;
 			}
@@ -150,16 +162,17 @@ public class MenuTracker {
 				io.println("This id not found");
 				}		
 		}
-		
-		public String info() {
-			return String.format("%s. %s", this.key(), "Edit the new item.");
-		}
 	}
 	
 	/**
 	* Class search Task by id
 	*/
-	private class SearchById implements UserAction {
+	private class SearchById extends BaseAction {
+		
+		SearchById(String name){
+			super(name);
+		}
+		
 		public int key() {
 				return 4;
 			}
@@ -176,16 +189,17 @@ public class MenuTracker {
 				io.println("This id not found.");
 				}
 		}
-		
-		public String info() {
-			return String.format("%s. %s", this.key(), "Search task by ID.");
-		}
 	}
 		
 	/**
 	* Class search Task by Name
 	*/
-	private class SearchByName implements UserAction {
+	private class SearchByName extends BaseAction {
+		
+		SearchByName(String name){
+			super(name);
+		}
+		
 		public int key() {
 				return 5;
 			}
@@ -202,16 +216,17 @@ public class MenuTracker {
 				io.println("This name not found.");
 			}
 		}
-		
-		public String info() {
-			return String.format("%s. %s", this.key(), "Search task by Name.");
-		}
 	}
 	
 	/**
 	* Class add comment to Task
 	*/
-	private class AddComment implements UserAction {
+	private class AddComment extends BaseAction {
+		
+		AddComment(String name){
+			super(name);
+		}
+		
 		public int key() {
 				return 6;
 			}
@@ -230,16 +245,17 @@ public class MenuTracker {
 				io.println("This id not found");
 				}
 		}
-		
-		public String info() {
-			return String.format("%s. %s", this.key(), "Add comment to task.");
-		}
 	}
 	
 	/**
 	* Class delete Task
 	*/
-	private class DelTask implements UserAction {
+	private class DelTask extends BaseAction {
+		
+		DelTask(String name){
+			super(name);
+		}
+		
 		public int key() {
 				return 7;
 		}
@@ -259,10 +275,6 @@ public class MenuTracker {
 			}else{
 			io.println("This id not found");
 			}
-		}
-		
-		public String info() {
-			return String.format("%s. %s", this.key(), "Delete task.");
 		}
 	}
 }

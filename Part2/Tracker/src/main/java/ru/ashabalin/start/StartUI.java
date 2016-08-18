@@ -25,7 +25,6 @@ public class StartUI{
 		System.out.println("***Hello!!!***");
 		MenuTracker menu = new MenuTracker(this.io, tracker);
 		menu.fillActions();
-		// int[] ranges = new int[menu.getSize()];
 		do{
 			menu.show();
 			menu.select(io.ask("Please select what you want to do: ", menu.getSize()));
