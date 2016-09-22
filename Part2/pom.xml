@@ -14,5 +14,8 @@
 	
 	<modules>
 		<module>Tracker</module>
+		<module>Chess</module>
+		<module>Lesson3</module>
+		<module>Lesson4</module>
 	</modules>		
 </project>
