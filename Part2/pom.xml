@@ -17,5 +17,6 @@
 		<module>Chess</module>
 		<module>Lesson3</module>
 		<module>Lesson4</module>
+		<module>Control</module>
 	</modules>		
 </project>
