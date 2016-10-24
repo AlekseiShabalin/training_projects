@@ -5,68 +5,41 @@ import java.io.*;
 /**
  * @author Aleksei Shabalin on 10.10.2016.
  */
+
+/**
+ * Delete abuse word
+ */
 public class SortAbuse {
-//	private char[] tempInChar = new char[10];
-	private char inChar;
-	private int counter = 0;
 
 	public void dropAbuses(InputStream in, OutputStream out, String[] abuse) throws IOException {
 		InputStreamReader inReader = new InputStreamReader(in);
 		OutputStreamWriter outWriter = new OutputStreamWriter(out);
-		boolean matchWord = false;
-		int symbol = inReader.read();
-		while (symbol != -1){
-			inChar = (char) symbol;
-			symbol = inReader.read();
-		}
-		inReader.close();
+		StringBuilder inString = new StringBuilder();
+		int tempChar;
+		int counter = 0;
 
-		String tempString = String.valueOf(inChar);
+		while((tempChar = inReader.read()) != -1){
+			inString.append((char) tempChar);
 
-		for (int i = 0; i < abuse.length; i++) {
-			if (abuse[i].equals(tempString)) {
-				matchWord = true;
-				break;
+			for(String abuseWord : abuse) {
+				for (String s : inString.toString().split(" ")) {
+					if(abuseWord.toUpperCase().equals(s.toUpperCase())){
+						inString.delete(0, inString.length());
+					}else if(abuseWord.toUpperCase().startsWith(s.toUpperCase())){
+						counter++;
+					}
+				}
 			}
+
+			if(counter == 0){
+				outWriter.write(inString.toString());
+				inString.delete(0, inString.length());
+			}
+			counter = 0;
+			outWriter.flush();
 		}
 
-		if(matchWord == true){
-			System.out.println("You entered an invalid word!");
-		}else {
-			System.out.println(tempString);
-		}
-
-
-//		Scanner inReader = new Scanner(in);
-//		PrintStream outWriter = new PrintStream(out);
-//		boolean matchWord = false;
-//		String inWord = inReader.next();
-//
-//		for (int i = 0; i < abuse.length; i++) {
-//				if (abuse[i].equals(inWord)) {
-//					matchWord = true;
-//					break;
-//				}
-//			}
-//
-//		if(matchWord == true){
-//			outWriter.println("You entered an invalid word!");
-//		}else {
-//			outWriter.println(inWord);
-//		}
-//
-//		inReader.close();
-//		outWriter.close();
-	}
-
-
-	public static void main(String[] args) throws IOException {
-
-		DataInputStream inReader = new DataInputStream(System.in);
-		DataOutputStream outWriter = new DataOutputStream(System.out);
-		String[] testAbuse = {"One", "Two", "Three"};
-
-		SortAbuse abuse = new SortAbuse();
-		abuse.dropAbuses(inReader, outWriter, testAbuse);
+		inReader.close();
+		outWriter.close();
 	}
 }
