@@ -32,7 +32,7 @@ public class Palindrome {
 				if(inWord.toUpperCase().equals(reverseWord.toUpperCase())){
 					result = true;
 				}
-			}else throw new IOException("This word doesn`t contain five letters " + inWord);
+			}else throw new IOException(String.format("%s %s", "This word doesn`t contain five letters", inWord));
 
 		return result;
 	}
