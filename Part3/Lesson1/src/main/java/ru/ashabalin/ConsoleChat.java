@@ -1,4 +1,4 @@
-package ru.ashabalin.chat;
+package ru.ashabalin;
 
 /**
  * @author Aleksei Shabalin on 01.11.2016.
@@ -39,27 +39,22 @@ public class ConsoleChat {
 		this.logWriter();
 		String userMessage = "";
 
-		while (true) {
+		while (!userMessage.toLowerCase().equals("закончить")) {
 			userMessage = this.inReader.readLine();
-			if(userMessage.toLowerCase().equals("закончить")) {
+			this.validatorWord(userMessage);
+			if(this.isComputerAnswer == true && !userMessage.toLowerCase().equals("закончить")) {
 				sendMessage("User", userMessage);
-				this.inReader.close();
-				this.outWriter.flush();
-				this.outWriter.close();
-				this.raf.close();
-				this.fileWriter.flush();
-				this.fileWriter.close();
-				break;
-			}else {
-				this.validatorWord(userMessage);
-				if(this.isComputerAnswer == true) {
-					sendMessage("User", userMessage);
-					this.answerBot();
-				}else{
-					sendMessage("User", userMessage);
-				}
+				this.answerBot();
+			}else{
+				sendMessage("User", userMessage);
 			}
 		}
+		this.inReader.close();
+		this.outWriter.flush();
+		this.outWriter.close();
+		this.raf.close();
+		this.fileWriter.flush();
+		this.fileWriter.close();
 	}
 
 	/**
