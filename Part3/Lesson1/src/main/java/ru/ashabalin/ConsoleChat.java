@@ -81,6 +81,7 @@ public class ConsoleChat {
 			answerMessage = "I don`t know what tell";
 		}
 		this.sendMessage("Bot", answerMessage);
+		counter = 0;
 	}
 
 	/**
